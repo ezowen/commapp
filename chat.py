@@ -26,6 +26,11 @@ def thingy():
 		print "Host got a connection woo"
 		c.send("message sent to client")
 		
+#sends request to start a new conversation
+def sendRequest(contactinfo):
+	global conactsinfo
+	
+		
 #set up a new connection/contact/converation
 def newconvo():
 	startnew = Toplevel()
@@ -39,6 +44,8 @@ def newconvo():
 	contactinfo.grid (row=1, column=0)
 	info = Entry (newframe, width=20)
 	info.grid (row=1, column=1)
+	request = Button (newframe, text="Request", command=sendRequest(contactinfo.get()))
+	request.grid(row=3)
 	newframe.pack()
 	startnew.mainloop()
 	
@@ -59,7 +66,7 @@ def checkWhosOnline():
 
 #start GUI
 root = Tk()
-root.title("CHAT")
+root.title("tiddly winks")
 
 #menubar stuff
 menubar= Menu(root)
@@ -78,17 +85,18 @@ leftframe.pack(side=LEFT)
 #right frame to hold conversation and input
 rightframe = Frame(root)
 
-convo = Text(rightframe, state=DISABLED, width=50, height=15)
-convo.pack(side=LEFT)
-scroll = Scrollbar(rightframe, command=convo.yview)
-scroll.pack (side=LEFT, fill=Y)
-convo.config(yscrollcommand=scroll.set)
-
 entry = Entry(rightframe, width=40)
-entry.pack(side=BOTTOM)
+entry.pack(side=BOTTOM, fill=X)
 entry.bind("<Return>", send)
 
-rightframe.pack()
+convo = Text(rightframe, state=DISABLED, width=50, height=15)
+convo.pack(side=LEFT, fill=X, expand=1)
+
+scroll = Scrollbar(rightframe, command=convo.yview)
+scroll.pack(side=LEFT, fill=Y, expand=1)
+convo.config(yscrollcommand=scroll.set)
+
+rightframe.pack(side=RIGHT, fill=BOTH, expand=1)
 
 root.mainloop()
 
