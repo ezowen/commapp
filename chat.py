@@ -30,15 +30,16 @@ def thingy():
 def newconvo():
 	startnew = Toplevel()
 	startnew.title("New contact info")
-	displayname = Label (startnew, text="Display name:")
-	displayname.gird (row=0, column=0)
-	name = Entry (startnew, width=10)
+	newframe = Frame(startnew, padx=10, pady=10)
+	displayname = Label (newframe, text="Display name:", pady=5)
+	displayname.grid (row=0, column=0)
+	name = Entry (newframe, width=20)
 	name.grid (row=0, column=1)
-	contactinfo = Label (startnew, text="Contact info:")
-	contactinfo.gird (row=1, column=0)
-	info = Entry (startnew, width=10)
+	contactinfo = Label (newframe, text="Contact info:", pady=5)
+	contactinfo.grid (row=1, column=0)
+	info = Entry (newframe, width=20)
 	info.grid (row=1, column=1)
-	name.pack()
+	newframe.pack()
 	startnew.mainloop()
 	
 	
@@ -76,11 +77,17 @@ leftframe.pack(side=LEFT)
 
 #right frame to hold conversation and input
 rightframe = Frame(root)
+
 convo = Text(rightframe, state=DISABLED, width=50, height=15)
-convo.pack(side=TOP)
+convo.pack(side=LEFT)
+scroll = Scrollbar(rightframe, command=convo.yview)
+scroll.pack (side=LEFT, fill=Y)
+convo.config(yscrollcommand=scroll.set)
+
 entry = Entry(rightframe, width=40)
 entry.pack(side=BOTTOM)
 entry.bind("<Return>", send)
+
 rightframe.pack()
 
 root.mainloop()
