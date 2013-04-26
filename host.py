@@ -2,21 +2,22 @@ from Tkinter import*
 import socket
 
 #socket stuff
-s = socket.socket()
-host = socket.gethostname()
-port = 2328
-s.bind((host, port))
-s.listen(1)
-addr = ""
-c = ""
-while (addr==""):
-	c, addr = s.accept()
-	print "Host got a connection woo"
-	c.send("message sent to client")
+def thingy():
+	s = socket.socket()
+	host = socket.gethostname()
+	port = 2328
+	s.bind((host, port))
+	s.listen(1)
+	addr = ""
+	c = ""
+	while (addr==""):
+		c, addr = s.accept()
+		print "Host got a connection woo"
+		c.send("message sent to client")
 	
 
 root = Tk()
-root.title("HOST")
+root.title("CHAT")
 
 #event to send message and clear entry field
 def send(event):
@@ -24,14 +25,15 @@ def send(event):
 	convo.insert(END, entry.get()) #add entry to convo
 	convo.insert(END, '\n')
 	convo.config(state=DISABLED)
-	c.send(entry.get()) # send message to client
+	#c.send(entry.get()) # send message to client
 	entry.delete(0, END) #clear entry
 
 #menubar stuff
 menubar= Menu(root)
-menubar.add_command(label="file", command=c.close())
-menubar.add_command(label="contacts")
-menubar.add_command(label="conversation")
+file = Menu(menubar, tearoff=0)
+file.add_command(label="New", command=newconvo)
+file.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=file)
 root.config(menu=menubar)
 
 #left frame to hold list of contacts
