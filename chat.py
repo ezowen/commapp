@@ -4,13 +4,6 @@ import socket
 contactsName = [] #create empty list for contact names
 contactsInfo = [] #create empty list for contacts connection info
 
-s = socket.socket()
-host = socket.gethostname()
-port = 2328
-s.connect((host, port))
-print s.recv(1024)
-
-		
 #sends request to start a new conversation
 def sendRequest(contactinfo):
 	global conactsinfo
@@ -34,6 +27,7 @@ def newconvo():
 	startnew.mainloop()
 	
 #event to send message and clear entry field
+#check for nothing in entry field
 def send(event):
 	convo.config(state=NORMAL)
 	convo.insert(END, entry.get()) #add entry to convo
@@ -73,14 +67,13 @@ def loginPrompt():
 	loginframe.pack()
 	login.mainloop()
 
-
 #----------------------------------------------------END OF FUNCTIONS-------------------------------------------
 
-
-
-
-
 #socket set up stuff
+sock = socket.socket()
+host = socket.gethostname()
+port = 2224
+sock.connect((host, port))
 
 #STARTING GUI
 root = Tk()
