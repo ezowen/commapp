@@ -7,7 +7,11 @@
 
 from Tkinter import*
 import socket
-import thread
+import threading
+
+#thread class for client connections -- will absorb clientThread function
+class clientThread(threading.Thread):
+	
 
 #if user is new, add them to the file
 def newUser(user, passw):
@@ -47,29 +51,40 @@ def clientThread(conn):
 		else:
 			deleteme=1
 
+#recieve connections
+def recieveConnections(servsoc):
+	while 1:
+		conn, addr = servsoc.accept()
+	
+
+print "HOST STARTED..."
+
 #socket stuff
-s = socket.socket()
+servsoc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.gethostname()
 port = 2224
-s.bind((host, port))
-s.listen(5)
-conn=""
-while conn=="":
-	conn, addr = s.accept()
+servsoc.bind((host, port))
+servsoc.listen(5)
+
+inputs = [servsoc] #list of sockets to read from
+outputs = [] #list of sockets to write to
+
+while 1:
+	conn, addr = servsoc.accept()
 	print "Connection made from "+str(conn)+" at "+str(addr)
 	thread.start_new_thread(clientThread, (conn,))
 
-#GUI stuff
-root = Tk()
-root.title("server")
-activity = Text (root, width=50)
-activity.insert(END, "host is running: "+host+" on port "+str(port)+"\n")
-activity.config(state=DISABLED)
-activity.pack()
-closesock = Button(root, text="close socket", command=s.close())
-closesock.pack()
+#~ #GUI stuff
+#~ root = Tk()
+#~ root.title("server")
+#~ activity = Text (root, width=50)
+#~ activity.insert(END, "host is running: "+host+" on port "+str(port)+"\n")
+#~ activity.config(state=DISABLED)
+#~ activity.pack()
+#~ closesock = Button(root, text="close socket", command=s.close())
+#~ closesock.pack()
 
-root.mainloop()
+#~ root.mainloop()
 
 	
 	
