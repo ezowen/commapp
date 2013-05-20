@@ -73,7 +73,7 @@ def loginPrompt():
 sock = socket.socket()
 host = socket.gethostname()
 port = 2224
-sock.connect((host, port))
+#sock.connect((host, port))
 
 #STARTING GUI
 root = Tk()
