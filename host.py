@@ -66,10 +66,18 @@ port = 2224
 servsoc.bind((host, port))
 servsoc.listen(5)
 
-inputs = [servsoc] #list of sockets to read from
-outputs = [] #list of sockets to write to
+connections = [] #list of sockets to read from
 
 while 1:
+	rlist, wlist, xlist = select.select(connections + [servsoc], [])
+	for i in rlist:
+		if i ==s:
+			conn, addr = s.accept()
+			connections.append(conn)
+			continue
+		try:
+			data = 
+	
 	conn, addr = servsoc.accept()
 	print "Connection made from "+str(conn)+" at "+str(addr)
 	thread.start_new_thread(clientThread, (conn,))
