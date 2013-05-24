@@ -7,11 +7,8 @@
 
 from Tkinter import*
 import socket
-import threading
+import select
 
-#thread class for client connections -- will absorb clientThread function
-class clientThread(threading.Thread):
-	
 
 #if user is new, add them to the file
 def newUser(user, passw):
@@ -69,18 +66,19 @@ servsoc.listen(5)
 connections = [] #list of sockets to read from
 
 while 1:
-	rlist, wlist, xlist = select.select(connections + [servsoc], [])
-	for i in rlist:
-		if i ==s:
-			conn, addr = s.accept()
+	rlist, wlist, xlist = select.select(connections + [servsoc], [], [])
+	for r in rlist:
+		if r == servsoc:
+			conn, addr = r.accept()
 			connections.append(conn)
 			continue
 		try:
-			data = 
+			data = r.recv(1024)
+		except socket.error:
+			print "no data recieved from" + conn
+		if data:
+			print data
 	
-	conn, addr = servsoc.accept()
-	print "Connection made from "+str(conn)+" at "+str(addr)
-	thread.start_new_thread(clientThread, (conn,))
 
 #~ #GUI stuff
 #~ root = Tk()

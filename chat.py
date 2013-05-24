@@ -4,6 +4,12 @@ import socket
 contactsName = [] #create empty list for contact names
 contactsInfo = [] #create empty list for contacts connection info
 
+#socket set up stuff
+sock = socket.socket()
+host = socket.gethostname()
+port = 2224
+sock.connect((host, port))
+
 #sends request to start a new conversation
 def sendRequest(contactinfo):
 	global conactsinfo
@@ -30,9 +36,11 @@ def newconvo():
 #check for nothing in entry field
 def send(event):
 	convo.config(state=NORMAL)
-	convo.insert(END, entry.get()) #add entry to convo
+	data = entry.get() #get data from entry field
+	convo.insert(END, data) #add data to convo
 	convo.insert(END, '\n')
 	convo.config(state=DISABLED)
+	sock.send(data) #send data to server
 	entry.delete(0, END) #clear entry
 	
 #upon startup, check for any contacts currently hosting, connect to any online
@@ -44,8 +52,7 @@ def login():
 	global contactsInfo
 
 def newUser(user, passw):
-	file = open('userInfo.txt', 'w+')
-	
+	file = open('userInfo.txt', 'w+')	
 
 #window for user to login, stores data in userInfo.txt
 def loginPrompt():
@@ -69,11 +76,8 @@ def loginPrompt():
 
 #----------------------------------------------------END OF FUNCTIONS-------------------------------------------
 
-#socket set up stuff
-sock = socket.socket()
-host = socket.gethostname()
-port = 2224
-#sock.connect((host, port))
+
+
 
 #STARTING GUI
 root = Tk()

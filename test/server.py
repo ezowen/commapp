@@ -15,9 +15,9 @@ while True:
    print 'loop iteration: ', i
    rlist, wlist, xlist = select.select(connections + [s], [], [])
    c, addr = s.accept()     # Establish connection with client.
-   if i > 0:
-	print "i is bigger than 0"
-	print c.recv(1024)
+   
+   
+   print c.recv(1024)
    
    c.close()                # Close the connection
    i = i+1
